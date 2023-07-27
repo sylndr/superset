@@ -1,0 +1,29 @@
+#009B5D -> #0xxB5D
+#008d55 -> #00xx55
+#007144 -> #00xx44
+#005533 -> #00xx33
+#2eaa7a -> #2exx7a
+#71bf95 -> #71xx95
+#a5cfbe -> #a5xxbe
+#d8ebe3 -> #d8xxe3
+#ecf0ef -> #ecxxef
+
+#002d5d -> #009B5D
+#004690 -> #008d55
+#001c3a -> #007144
+#1b222a -> #005533
+#33577d -> #2eaa7a
+#6c96c4 -> #71bf95
+#9fb7d6 -> #a5cfbe
+#d0dae6 -> #d8ebe3
+#e8ecf0 -> #ecf0ef
+
+#0xxB5D -> #002d5d
+#00xx55 -> #004690
+#00xx44 -> #001c3a
+#00xx33 -> #1b222a
+#2exx7a -> #33577d
+#71xx95 -> #6c96c4
+#a5xxbe -> #9fb7d6
+#d8xxe3 -> #d0dae6
+#ecxxef -> #e8ecf0

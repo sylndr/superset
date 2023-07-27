@@ -27,25 +27,28 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
 
 :root {
-  --ifm-color-primary: #20a7c9;
-  --ifm-color-primary-dark: #1985a0;
-  --ifm-color-primary-darker: #t;
-  --ifm-color-primary-darkest: #ffffff;
-  --ifm-color-primary-light: #79cade;
-  --ifm-color-primary-lighter: #a5dbe9;
-  --ifm-color-primary-lightest: #d2edf4;
+  --ifm-color-primary: #009B5D;
+  --ifm-color-primary-dark: #008d55;
+  --ifm-color-primary-darker: #007144;
+  --ifm-color-primary-darkest: #005533;
+  --ifm-color-primary-light: #2eaa7a;
+  --ifm-color-primary-lighter: #71bf95;
+  --ifm-color-primary-lightest: #d8ebe3;
   --ifm-code-font-size: 95%;
   --ifm-menu-link-padding-vertical: 12px;
   --doc-sidebar-width: 350px !important;
   --ifm-navbar-height: none;
   --ifm-font-family-base: Inter;
 }
+
 body {
   font-family: Inter !important;
 }
+
 .DocSearch-Button .DocSearch-Button-Key {
   display: none;
 }
+
 .github-logo-container {
   background-image: url('/img/github.png');
   background-size: contain;
@@ -108,6 +111,7 @@ html[data-theme='dark'] .docusaurus-highlight-code-line {
     padding-left: 0;
   }
 }
-a > span > svg {
+
+a>span>svg {
   display: none;
 }

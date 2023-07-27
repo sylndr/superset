@@ -33,3 +33,5 @@ esm/
 lib/
 tmp/
 storybook-static/
+/**/*.d.ts
+/**/*.tsx

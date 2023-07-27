@@ -16,23 +16,18 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import emotionStyled from '@emotion/styled';
-import { useTheme as useThemeBasic } from '@emotion/react';
 import createCache from '@emotion/cache';
+import { useTheme as useThemeBasic } from '@emotion/react';
+import emotionStyled from '@emotion/styled';
 
-export {
-  css,
-  keyframes,
-  jsx,
-  ThemeProvider,
-  CacheProvider as EmotionCacheProvider,
-  withTheme,
-} from '@emotion/react';
 export { default as createEmotionCache } from '@emotion/cache';
+export {
+    CacheProvider as EmotionCacheProvider, ThemeProvider, css, jsx, keyframes, withTheme
+} from '@emotion/react';
 
 declare module '@emotion/react' {
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
-  export interface Theme extends SupersetTheme {}
+  export interface Theme extends SupersetTheme { }
 }
 
 export function useTheme() {
@@ -56,29 +51,29 @@ const defaultTheme = {
   borderRadius: 4,
   colors: {
     text: {
-      label: '#879399',
+      label: '#a5cfbe',
       help: '#737373',
     },
     primary: {
-      base: '#20A7C9',
-      dark1: '#1A85A0',
-      dark2: '#156378',
-      light1: '#79CADE',
-      light2: '#A5DAE9',
-      light3: '#D2EDF4',
-      light4: '#E9F6F9',
-      light5: '#F3F8FA',
+      base: '#009B5D',
+      dark1: '#008d55',
+      dark2: '#001c3a',
+      light1: '#2eaa7a',
+      light2: '#71bf95',
+      light3: '#a5cfbe',
+      light4: '#d8ebe3',
+      light5: '#ecf0ef',
     },
     secondary: {
-      base: '#444E7C',
-      dark1: '#363E63',
-      dark2: '#282E4A',
-      dark3: '#1B1F31',
-      light1: '#8E94B0',
-      light2: '#B4B8CA',
-      light3: '#D9DBE4',
-      light4: '#ECEEF2',
-      light5: '#F5F5F8',
+      base: '#002d5d',
+      dark1: '#004690',
+      dark2: '#001c3a',
+      dark3: '#1b222a',
+      light1: '#33577d',
+      light2: '#6c96c4',
+      light3: '#9fb7d6',
+      light4: '#d0dae6',
+      light5: '#e8ecf0',
     },
     grayscale: {
       base: '#666666',
@@ -91,11 +86,11 @@ const defaultTheme = {
       light5: '#FFFFFF',
     },
     error: {
-      base: '#E04355',
-      dark1: '#A7323F',
-      dark2: '#6F212A',
-      light1: '#EFA1AA',
-      light2: '#FAEDEE',
+      base: '#E61657',
+      dark1: '#890d34',
+      dark2: '#5a0922',
+      light1: '#f180a3',
+      light2: '#fdeaf0',
     },
     warning: {
       base: '#FF7F44',
@@ -112,11 +107,11 @@ const defaultTheme = {
       light2: '#FEF9E6',
     },
     success: {
-      base: '#5AC189',
-      dark1: '#439066',
-      dark2: '#2B6144',
-      light1: '#ACE1C4',
-      light2: '#EEF8F3',
+      base: '#01CE7C',
+      dark1: '#01a965',
+      dark2: '#017044',
+      light1: '#74e4b8',
+      light2: '#e8fbf3',
     },
     info: {
       base: '#66BCFE',
