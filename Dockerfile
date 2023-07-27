@@ -22,124 +22,76 @@ ARG PY_VER=3.9-slim-bookworm
 
 # if BUILDPLATFORM is null, set it to 'amd64' (or leave as is otherwise).
 ARG BUILDPLATFORM=${BUILDPLATFORM:-amd64}
-FROM --platform=${BUILDPLATFORM} node:16-bookworm-slim AS superset-node
+FROM --platform=${BUILDPLATFORM} node:16-slim AS superset-node
 
 ARG NPM_BUILD_CMD="build"
 
-RUN apt-get update -qq \
-    && apt-get install -yqq --no-install-recommends \
-        build-essential \
-        python3
+RUN apt-get update -q \
+    && apt-get install -yq --no-install-recommends \
+    python3 \
+    make \
+    gcc \
+    g++
 
 ENV BUILD_CMD=${NPM_BUILD_CMD} \
     PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+
+RUN apt-get update || : && apt-get install -y \
+    python3 \
+    build-essential
 # NPM ci first, as to NOT invalidate previous steps except for when package.json changes
 WORKDIR /app/superset-frontend
 
-RUN --mount=type=bind,target=/frontend-mem-nag.sh,src=./docker/frontend-mem-nag.sh \
-    /frontend-mem-nag.sh
+COPY ./docker/frontend-mem-nag.sh /
 
-RUN --mount=type=bind,target=./package.json,src=./superset-frontend/package.json \
-    --mount=type=bind,target=./package-lock.json,src=./superset-frontend/package-lock.json \
-    npm ci
+RUN /frontend-mem-nag.sh
+
+COPY superset-frontend/package*.json ./
+
+RUN npm ci --timeout=120000
 
 COPY ./superset-frontend ./
+
 # This seems to be the most expensive step
 RUN npm run ${BUILD_CMD}
 
 ######################################################################
 # Final lean image...
 ######################################################################
-FROM python:${PY_VER} AS lean
-
-WORKDIR /app
-ENV LANG=C.UTF-8 \
-    LC_ALL=C.UTF-8 \
-    SUPERSET_ENV=production \
-    FLASK_APP="superset.app:create_app()" \
-    PYTHONPATH="/app/pythonpath" \
-    SUPERSET_HOME="/app/superset_home" \
-    SUPERSET_PORT=8088
-
-RUN --mount=target=/var/lib/apt/lists,type=cache \
-    --mount=target=/var/cache/apt,type=cache \
-    mkdir -p ${PYTHONPATH} superset/static superset-frontend apache_superset.egg-info requirements \
-    && useradd --user-group -d ${SUPERSET_HOME} -m --no-log-init --shell /bin/bash superset \
-    && apt-get update -qq && apt-get install -yqq --no-install-recommends \
-        build-essential \
-        curl \
-        default-libmysqlclient-dev \
-        libsasl2-dev \
-        libsasl2-modules-gssapi-mit \
-        libpq-dev \
-        libecpg-dev \
-        libldap2-dev \
-    && touch superset/static/version_info.json \
-    && chown -R superset:superset ./*
-
-COPY --chown=superset:superset setup.py MANIFEST.in README.md ./
-# setup.py uses the version information in package.json
-COPY --chown=superset:superset superset-frontend/package.json superset-frontend/
-RUN --mount=type=bind,target=./requirements/local.txt,src=./requirements/local.txt \
-    --mount=type=bind,target=./requirements/development.txt,src=./requirements/development.txt \
-    --mount=type=bind,target=./requirements/base.txt,src=./requirements/base.txt \
-    --mount=type=cache,target=/root/.cache/pip \
-    pip install -r requirements/local.txt
-
-COPY --chown=superset:superset --from=superset-node /app/superset/static/assets superset/static/assets
-## Lastly, let's install superset itself
-COPY --chown=superset:superset superset superset
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install -e . \
-    && flask fab babel-compile --target superset/translations \
-    && chown -R superset:superset superset/translations
-
-COPY --chmod=755 ./docker/run-server.sh /usr/bin/
-USER superset
-
-HEALTHCHECK CMD curl -f "http://localhost:${SUPERSET_PORT}/health"
-
-EXPOSE ${SUPERSET_PORT}
-
-CMD ["/usr/bin/run-server.sh"]
-
-######################################################################
-# Dev image...
-######################################################################
-FROM lean AS dev
-ARG GECKODRIVER_VERSION=v0.33.0 \
-    FIREFOX_VERSION=117.0.1
+FROM apache/superset:3.1.0
 
 USER root
 
-RUN --mount=target=/var/lib/apt/lists,type=cache \
-    --mount=target=/var/cache/apt,type=cache \
-    apt-get install -yqq --no-install-recommends \
-        libnss3 \
-        libdbus-glib-1-2 \
-        libgtk-3-0 \
-        libx11-xcb1 \
-        libasound2 \
-        libxtst6 \
-        wget \
-    # Install GeckoDriver WebDriver
-    && wget -q https://github.com/mozilla/geckodriver/releases/download/${GECKODRIVER_VERSION}/geckodriver-${GECKODRIVER_VERSION}-linux64.tar.gz -O - | tar xfz - -C /usr/local/bin \
-    # Install Firefox
-    && wget -q https://download-installer.cdn.mozilla.net/pub/firefox/releases/${FIREFOX_VERSION}/linux-x86_64/en-US/firefox-${FIREFOX_VERSION}.tar.bz2 -O - | tar xfj - -C /opt \
-    && ln -s /opt/firefox/firefox /usr/local/bin/firefox \
-    && apt-get autoremove -yqq --purge wget && rm -rf /var/[log,tmp]/* /tmp/*
-# Cache everything for dev purposes...
-RUN --mount=type=bind,target=./requirements/base.txt,src=./requirements/base.txt \
-    --mount=type=bind,target=./requirements/docker.txt,src=./requirements/docker.txt \
-    --mount=type=cache,target=/root/.cache/pip \
-    pip install -r requirements/docker.txt
+COPY --chown=superset:superset --from=superset-node /app/superset/static/assets superset/static/assets
+
+## Lastly, let's install superset itself
+COPY superset /app/superset
+COPY setup.py MANIFEST.in README.md /app/
+RUN cd /app \
+    && chown -R superset:superset * \
+    && pip install -e . \
+    && flask fab babel-compile --target superset/translations
+
+# COPY ./docker/run-server.sh /usr/bin/
+
+# RUN chmod a+x /usr/bin/run-server.sh
+
+RUN apt-get update && \
+    apt-get install --no-install-recommends -y unzip wget
+
+RUN export CHROMEDRIVER_VERSION=$(curl --silent https://chromedriver.storage.googleapis.com/LATEST_RELEASE_114) && \
+    wget -qO google-chrome-stable_current_amd64.deb https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_${CHROMEDRIVER_VERSION}-1_amd64.deb && \
+    apt-get install -y --no-install-recommends ./google-chrome-stable_current_amd64.deb && \
+    rm -f google-chrome-stable_current_amd64.deb && \
+    wget -qO chromedriver_linux64.zip https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip && \
+    unzip chromedriver_linux64.zip -d /usr/bin && \
+    chmod 755 /usr/bin/chromedriver && \
+    rm -f chromedriver_linux64.zip
+
+RUN pip install "Authlib==1.2.0" "selenium==4.9.0" "sqlalchemy-bigquery==1.6.1"
 
 USER superset
-######################################################################
-# CI image...
-######################################################################
-FROM lean AS ci
 
-COPY --chown=superset:superset --chmod=755 ./docker/*.sh /app/docker/
+EXPOSE 8088
 
-CMD ["/app/docker/docker-ci.sh"]
+CMD ["/usr/bin/run-server.sh"]

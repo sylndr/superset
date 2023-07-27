@@ -146,11 +146,11 @@ const StyledScreenshotContainer = styled('div')`
     left: 20px;
     width: calc(100% - 40px);
     height: calc(100% - 15px);
-    background-color: #256b7c;
+    background-color: #71bf95;
     border-radius: 10px;
     z-index: 2;
     ${mq[1]} {
-      background-color: #335a64;
+      background-color: #2eaa7a;
       top: 10px;
       left: 15px;
       width: calc(100% - 30px);
@@ -163,18 +163,18 @@ const StyledScreenshotContainer = styled('div')`
     left: 40px;
     width: calc(100% - 80px);
     height: 100%;
-    background-color: #0d5262;
+    background-color: #008d55;
     border-radius: 10px;
     z-index: 1;
     ${mq[1]} {
-      background-color: #1f4048;
+      background-color: #007144;
       left: 30px;
       width: calc(100% - 60px);
     }
   }
   .screenshotBlur {
     display: none;
-    background-color: #173036;
+    background-color: #001c3a;
     filter: blur(45px);
     position: absolute;
     bottom: 0;
@@ -287,7 +287,7 @@ const StyledSliderSection = styled('div')`
     }
     .toggle {
       font-size: 24px;
-      color: #b4c0c7;
+      color: #b9ead5;
       position: relative;
       padding-left: 32px;
       cursor: pointer;
@@ -302,7 +302,7 @@ const StyledSliderSection = styled('div')`
         width: 12px;
         height: 12px;
         border-radius: 50%;
-        background-color: #457f8d;
+        background-color: #71bf95;
         position: absolute;
         top: 50%;
         left: 0;

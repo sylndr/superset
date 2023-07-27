@@ -27,13 +27,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
 :root {
-  --ifm-color-primary: #20a7c9;
-  --ifm-color-primary-dark: #1985a0;
-  --ifm-color-primary-darker: #t;
-  --ifm-color-primary-darkest: #ffffff;
-  --ifm-color-primary-light: #79cade;
-  --ifm-color-primary-lighter: #a5dbe9;
-  --ifm-color-primary-lightest: #d2edf4;
+  --ifm-color-primary: #009B5D;
+  --ifm-color-primary-dark: #008d55;
+  --ifm-color-primary-darker: #005533;
+  --ifm-color-primary-darkest: #002D5D;
+  --ifm-color-primary-light: #2eaa7a;
+  --ifm-color-primary-lighter: #71bf95;
+  --ifm-color-primary-lightest: #a9dac5;
   --ifm-font-base-color: #484848;
   --ifm-font-base-color-inverse: #ffffff;
   --ifm-code-font-size: 95%;
@@ -41,8 +41,8 @@
   --doc-sidebar-width: 350px !important;
   --ifm-navbar-height: none;
   --ifm-font-family-base: Roboto;
-  --ifm-footer-background-color: #173036;
-  --ifm-footer-color: #87939a;
+  --ifm-footer-background-color: #4a5a6b;
+  --ifm-footer-color: #A4B4C5;
   --ifm-off-section-background: #fbfbfb;
   --ifm-border-color: #ededed;
   --ifm-primary-text: #484848;
