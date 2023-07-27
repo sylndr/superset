@@ -307,7 +307,7 @@ export function transformSeries(
     symbolSize: markerSize,
     label: {
       show: !!showValue,
-      position: isHorizontal ? 'right' : 'top',
+      position: plotType.toLowerCase() !== 'bar' ? 'top' : 'inside',
       formatter: (params: any) => {
         const { value, dataIndex, seriesIndex, seriesName } = params;
         const numericValue = isHorizontal ? value[0] : value[1];
