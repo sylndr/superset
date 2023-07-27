@@ -78,6 +78,7 @@ RUN cd /app \
 
 RUN apt-get update && \
     apt-get install --no-install-recommends -y unzip wget
+
 RUN export CHROMEDRIVER_VERSION=$(curl --silent https://chromedriver.storage.googleapis.com/LATEST_RELEASE_114) && \
     wget -qO google-chrome-stable_current_amd64.deb https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_${CHROMEDRIVER_VERSION}-1_amd64.deb && \
     apt-get install -y --no-install-recommends ./google-chrome-stable_current_amd64.deb && \
@@ -87,10 +88,10 @@ RUN export CHROMEDRIVER_VERSION=$(curl --silent https://chromedriver.storage.goo
     chmod 755 /usr/bin/chromedriver && \
     rm -f chromedriver_linux64.zip
 
-RUN pip install "Authlib==1.2.0" "selenium==4.9.0" sqlalchemy-bigquery
+RUN pip install "Authlib==1.2.0" "selenium==4.9.0" "sqlalchemy-bigquery==1.6.1"
 
 USER superset
 
 EXPOSE 8088
 
-CMD /usr/bin/run-server.sh
+CMD ["/usr/bin/run-server.sh"]
