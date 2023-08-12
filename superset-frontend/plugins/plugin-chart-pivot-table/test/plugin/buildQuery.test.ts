@@ -17,8 +17,8 @@
  * under the License.
  */
 
-import { TimeGranularity } from '@superset-ui/core';
 import * as supersetCoreModule from '@superset-ui/core';
+import { TimeGranularity } from '@superset-ui/core';
 import buildQuery from '../../src/plugin/buildQuery';
 import { PivotTableQueryFormData } from '../../src/types';
 
@@ -100,6 +100,21 @@ test('should prefer extra_form_data.time_grain_sqla over formData.time_grain_sql
   const [query] = queryContext.queries;
   expect(query.columns?.[0]).toEqual({
     timeGrain: TimeGranularity.QUARTER,
+    columnType: 'BASE_AXIS',
+    sqlExpression: 'col1',
+    label: 'col1',
+    expressionType: 'SQL',
+  });
+});
+
+test('should fallback to formData.time_grain_sqla if extra_form_data.time_grain_sqla is not set', () => {
+  Object.defineProperty(supersetCoreModule, 'hasGenericChartAxes', {
+    value: true,
+  });
+  const queryContext = buildQuery(formData);
+  const [query] = queryContext.queries;
+  expect(query.columns?.[0]).toEqual({
+    timeGrain: formData.time_grain_sqla,
     columnType: 'BASE_AXIS',
     sqlExpression: 'col1',
     label: 'col1',
