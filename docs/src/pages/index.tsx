@@ -16,16 +16,17 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import React, { useRef, useState, useEffect } from 'react';
-import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
-import { Carousel } from 'antd';
 import styled from '@emotion/styled';
+import Layout from '@theme/Layout';
+import { Carousel } from 'antd';
+import { useEffect, useRef, useState } from 'react';
 import GitHubButton from 'react-github-btn';
-import { Databases } from '../resources/data';
-import SectionHeader from '../components/SectionHeader';
 import BlurredSection from '../components/BlurredSection';
+import SectionHeader from '../components/SectionHeader';
+import { Databases } from '../resources/data';
 import '../styles/main.less';
+import { mq } from '../utils';
 
 const features = [
   {
@@ -563,136 +564,187 @@ export default function Home(): JSX.Element {
             <div className="screenshotBlur"></div>
           </StyledScreenshotContainer>
         </StyledTitleContainer>
-
-        <StyledFeatures>
-          <StyledHeading>Overview</StyledHeading>
-          <div className="info-text info-text-smaller">
-            Superset is fast, lightweight, intuitive, and loaded with options
-            that make it easy for users of all skill sets to explore and
-            visualize their data, from simple line charts to highly detailed
-            geospatial charts.
-          </div>
-          <ul className="featureList ant-row">
-            <Row>
-              <Col sm={24} md={12}>
-                <Feature
-                  icon={<FireOutlined className="warning-color" />}
-                  title="Powerful yet easy to use"
-                  descr={`
-                    Quickly and easily integrate and explore your data, using
-                    either our simple no-code viz builder or state of the art SQL
-                    IDE.
-                  `}
-                />
-              </Col>
-
-              <Col sm={24} md={12}>
-                <Feature
-                  icon={<DatabaseOutlined className="info-color" />}
-                  title="Integrates with modern databases"
-                  descr={`
-                    Superset can connect to any SQL based datasource
-                    through SQLAlchemy, including modern cloud native databases
-                    and engines at petabyte scale.
-                  `}
-                />
-              </Col>
-            </Row>
-            <Row>
-              <Col sm={24} md={12}>
-                <Feature
-                  icon={<DeploymentUnitOutlined className="success-color" />}
-                  title="Modern architecture"
-                  descr={`
-                    Superset is lightweight and highly scalable, leveraging the
-                    power of your existing data infrastructure without requiring
-                    yet another ingestion layer.
-                  `}
-                />
-              </Col>
-              <Col sm={24} md={12}>
-                <Feature
-                  icon={<DotChartOutlined className="alert-color" />}
-                  title="Rich visualizations and dashboards"
-                  descr={`
-                    Superset ships with a wide array of beautiful visualizations.
-                    Our visualization plug-in architecture makes it easy to build
-                    custom visualizations that drop directly into Superset.
-                  `}
-                />
-              </Col>
-            </Row>
-          </ul>
-        </StyledFeatures>
-
-        <CarouselSection>
-          <StyledHeading>Explore</StyledHeading>
-          <div className="toggleContainer">
-            <div className="toggleBtns">
-              <div
+        <BlurredSection>
+          <SectionHeader
+            level="h2"
+            title="Overview"
+            subtitle="Superset is fast, lightweight, intuitive, and loaded with options that make it easy for users of all skill sets to explore and visualize their data, from simple line charts to highly detailed geospatial charts."
+          />
+          <StyledFeaturesList>
+            {features.map(({ image, title, description }) => (
+              <li className="item" key={title}>
+                <div className="image">
+                  <img src={`/img/features/${image}`} />
+                </div>
+                <div className="content">
+                  <h4 className="title">{title}</h4>
+                  <p className="description">{description}</p>
+                </div>
+              </li>
+            ))}
+          </StyledFeaturesList>
+        </BlurredSection>
+        <BlurredSection>
+          <StyledSliderSection>
+            <SectionHeader
+              level="h2"
+              title="Self-serve analytics for anyone"
+              dark
+            />
+            <ul className="toggleBtns">
+              <li
                 className={`toggle ${slideIndex === 0 ? 'active' : null}`}
                 onClick={() => slider.current.goTo(0)}
                 role="button"
               >
-                <h2>Explore</h2>
-                <span>
-                  Explore your data using the array of data visualizations.
-                </span>
-              </div>
-
-              <div
+                Dashboards
+              </li>
+              <li
                 className={`toggle ${slideIndex === 1 ? 'active' : null}`}
                 onClick={() => slider.current.goTo(1)}
                 role="button"
               >
-                <h2>View</h2>
-                <span>View your data through interactive dashboards</span>
-              </div>
-              <div
+                Chart Builder
+              </li>
+              <li
                 className={`toggle ${slideIndex === 2 ? 'active' : null}`}
                 onClick={() => slider.current.goTo(2)}
                 role="button"
               >
-                <h2>Investigate</h2>
-                <span>Use SQL Lab to write queries to explore your data</span>
+                SQL Lab
+              </li>
+              <li
+                className={`toggle ${slideIndex === 3 ? 'active' : null}`}
+                onClick={() => slider.current.goTo(3)}
+                role="button"
+              >
+                Datasets
+              </li>
+            </ul>
+            <Carousel ref={slider} effect="scrollx" beforeChange={onChange}>
+              <div className="slide">
+                <p>
+                  Explore data and find insights from interactive dashboards.
+                </p>
               </div>
+              <div className="slide">
+                <p>Drag and drop to create robust charts and tables.</p>
+              </div>
+              <div className="slide">
+                <p>
+                  Write custom SQL queries, browse database metadata, use Jinja
+                  templating, and more.
+                </p>
+              </div>
+              <div className="slide">
+                <p>
+                  Create physical and virtual datasets to scale chart creation
+                  with unified metric definitions.
+                </p>
+              </div>
+            </Carousel>
+            <video autoPlay muted controls loop>
+              <source src="/video/superset-video-4k.mp4" type="video/mp4" />
+            </video>
+          </StyledSliderSection>
+          <StyledKeyFeatures>
+            <h3>Key features</h3>
+            <div className="grid">
+              <div className="item">
+                <img src="/img/check-icon.svg" alt="check-icon" />
+                <div>
+                  <strong>40+ pre-installed visualizations</strong>
+                </div>
+              </div>
+              <div className="item">
+                <img src="/img/check-icon.svg" alt="check-icon" />
+                <div>
+                  Support for <strong>drag-and-drop</strong> and{' '}
+                  <strong>SQL queries</strong>
+                </div>
+              </div>
+              <div className="item">
+                <img src="/img/check-icon.svg" alt="check-icon" />
+                <div>
+                  <strong>Data caching</strong> for the faster load time of
+                  charts and dashboards
+                </div>
+              </div>
+              <div className="item">
+                <img src="/img/check-icon.svg" alt="check-icon" />
+                <div>
+                  <strong>Jinja templating and dashboard filters</strong> for
+                  creating interactive dashboards
+                </div>
+              </div>
+              <div className="item">
+                <img src="/img/check-icon.svg" alt="check-icon" />
+                <div>
+                  <strong>CSS templates</strong> to customize charts and
+                  dashboards to your brand’s look and feel
+                </div>
+              </div>
+              <div className="item">
+                <img src="/img/check-icon.svg" alt="check-icon" />
+                <div>
+                  <strong>Semantic layer</strong> for SQL data transformations
+                </div>
+              </div>
+              <div className="item">
+                <img src="/img/check-icon.svg" alt="check-icon" />
+                <div>
+                  <strong>Cross-filters, drill-to-detail, and drill-by</strong>{' '}
+                  features for deeper data analysis
+                </div>
+              </div>
+              <div className="item">
+                <img src="/img/check-icon.svg" alt="check-icon" />
+                <div>
+                  <strong>Virtual datasets</strong> for ad-hoc data exploration
+            </div>
             </div>
             <Carousel ref={slider} effect="scrollx" afterChange={onChange}>
               <div className="imageContainer">
                 <img src="img/explore.jpg" alt="Explore (chart buider) UI" />
-              </div>
+                </div>
+            <Carousel ref={slider} effect="scrollx" afterChange={onChange}>
               <div className="imageContainer">
-                <img src="img/dashboard.jpg" alt="Superset Dashboard" />
+                <img src="img/explore.jpg" alt="Explore (chart buider) UI" />
               </div>
-              <div className="imageContainer">
-                <img src="img/sql_lab.jpg" alt="SQL Lab" />
+              <div className="item">
+                <img src="/img/check-icon.svg" alt="check-icon" />
+                <div>
+                  Access to new functionalities through{' '}
+                  <strong>feature flags</strong>
+                </div>
               </div>
-            </Carousel>
-          </div>
+            </div>
+          </StyledKeyFeatures>
+        </BlurredSection>
+        <BlurredSection>
           <StyledIntegrations>
-            <StyledHeading>Supported Databases</StyledHeading>
-
-            <ul className="database-list">
-              {Databases.map(({ title, imgName: imageName, width, height }) => (
-                <li>
-                  <StyledDatabaseImg
-                    src={`img/databases/${imageName}`}
-                    title={title}
-                    width={width || 'auto'}
-                    height={height || '50px'}
-                  />
-                </li>
+            <SectionHeader level="h2" title="Supported Databases" />
+            <div className="database-grid">
+              {Databases.map(({ title, href, imgName }) => (
+                <div className="item" key={title}>
+                  {href ? (
+                    <a href={href} aria-label={`Go to ${title} page`}>
+                      <img src={`/img/databases/${imgName}`} title={title} />
+                    </a>
+                  ) : (
+                    <img src={`/img/databases/${imgName}`} title={title} />
+                  )}
+                </div>
               ))}
-            </ul>
-            <span className="databaseSub">
-              ... and many other
-              <a href="docs/databases/installing-database-drivers">
-                {' '}
-                compatible databases{' '}
+            </div>
+            <span className="database-sub">
+              ...and many other{' '}
+              <a href="/docs/databases/installing-database-drivers">
+                compatible databases
               </a>
             </span>
           </StyledIntegrations>
-        </CarouselSection>
+        </BlurredSection>
       </StyledMain>
     </Layout>
   );
