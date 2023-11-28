@@ -48,7 +48,7 @@ RUN /frontend-mem-nag.sh
 
 COPY superset-frontend/package*.json ./
 
-RUN npm ci
+RUN npm ci --timeout=120000
 
 COPY ./superset-frontend ./
 
