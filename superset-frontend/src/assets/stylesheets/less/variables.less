@@ -24,28 +24,28 @@
 /* component styles. This will allow us to more easily adjust theming   */
 /************************************************************************/
 
-@primary-color: #20a7c9;
+@primary-color: #009B5D;
 @indicator-color: @primary-color;
 
-@brand-primary-dark1: #1a85a0;
-@brand-primary-dark2: #156378;
-@brand-primary-light1: #79cade;
-@brand-primary-light2: #a5dae9;
-@brand-primary-light3: #d2edf4;
-@brand-primary-light4: #e9f6f9;
-@brand-primary-light5: #f3f8fa;
+@brand-primary-dark1: #008d55;
+@brand-primary-dark2: #007144;
+@brand-primary-light1: #2eaa7a;
+@brand-primary-light2: #71bf95;
+@brand-primary-light3: #a5cfbe;
+@brand-primary-light4: #d8ebe3;
+@brand-primary-light5: #ecf0ef;
 
-@brand-secondary: #444e7c;
-@brand-secondary-dark1: #363e63;
-@brand-secondary-dark2: #282e4a;
-@brand-secondary-dark3: #1b1f31;
-@brand-secondary-light1: #8e94b0;
-@brand-secondary-light2: #b4b8ca;
-@brand-secondary-light3: #d9dbe4;
-@brand-secondary-light4: #eceef2;
-@brand-secondary-light5: #f5f5f8;
+@brand-secondary: #002d5d;
+@brand-secondary-dark1: #004690;
+@brand-secondary-dark2: #001c3a;
+@brand-secondary-dark3: #1b222a;
+@brand-secondary-light1: #33577d;
+@brand-secondary-light2: #6c96c4;
+@brand-secondary-light3: #9fb7d6;
+@brand-secondary-light4: #d0dae6;
+@brand-secondary-light5: #e8ecf0;
 
-@almost-black: #263238;
+@almost-black: #005533;
 @gray-dark: #484848;
 @gray-light: #e0e0e0;
 @gray-light5: #666666;
@@ -61,23 +61,23 @@
 @link-hover: darken(@link, @colorstop-one);
 
 /***************************** status colors ****************************/
-@info: #66bcfe;
-@info-dark1: #4d8cbe;
-@info-dark2: #315e7e;
-@info-light1: #b3defe;
+@info: #3E7BBD;
+@info-dark1: #369;
+@info-dark2: #254a6f;
+@info-light1: #b9d5f2;
 @info-light2: #eff8fe;
 
-@danger: #e04355;
-@danger-dark1: #a7323f;
-@danger-dark2: #6f212a;
-@danger-light1: #efa1aa;
-@danger-light2: #faedee;
+@danger: #E61657;
+@danger-dark1: #890d34;
+@danger-dark2: #5a0922;
+@danger-light1: #f180a3;
+@danger-light2: #fdeaf0;
 
-@success: #5ac189;
-@success-dark1: #439066;
-@success-dark2: #2b6144;
-@success-light1: #ace1c4;
-@success-light2: #eef8f3;
+@success: #01CE7C;
+@success-dark1: #01a965;
+@success-dark2: #017044;
+@success-light1: #74e4b8;
+@success-light2: #e8fbf3;
 
 @warning: #fcc700;
 @warning-dark1: #bc9501;
@@ -172,11 +172,13 @@
 .set-otf-options(@use-ligatures);
 
 .set-otf-options(true) {
-  @font-feature-settings: 'liga' on, 'calt' on;
+  @font-feature-settings: 'liga' on,
+  'calt' on;
 }
 
 .set-otf-options(false) {
-  @font-feature-settings: 'liga' off, 'calt' off;
+  @font-feature-settings: 'liga' off,
+  'calt' off;
 }
 
 // ****************************** Families ******************************

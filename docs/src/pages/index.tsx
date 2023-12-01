@@ -16,17 +16,17 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import React, { useRef, useState, useEffect } from 'react';
-import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
-import { Carousel } from 'antd';
 import styled from '@emotion/styled';
+import Layout from '@theme/Layout';
+import { Carousel } from 'antd';
+import { useEffect, useRef, useState } from 'react';
 import GitHubButton from 'react-github-btn';
-import { mq } from '../utils';
-import { Databases } from '../resources/data';
-import SectionHeader from '../components/SectionHeader';
 import BlurredSection from '../components/BlurredSection';
+import SectionHeader from '../components/SectionHeader';
+import { Databases } from '../resources/data';
 import '../styles/main.less';
+import { mq } from '../utils';
 
 const features = [
   {
@@ -146,11 +146,11 @@ const StyledScreenshotContainer = styled('div')`
     left: 20px;
     width: calc(100% - 40px);
     height: calc(100% - 15px);
-    background-color: #256b7c;
+    background-color: #008d55;
     border-radius: 10px;
     z-index: 2;
     ${mq[1]} {
-      background-color: #335a64;
+      background-color: #71bf95;
       top: 10px;
       left: 15px;
       width: calc(100% - 30px);
@@ -163,18 +163,18 @@ const StyledScreenshotContainer = styled('div')`
     left: 40px;
     width: calc(100% - 80px);
     height: 100%;
-    background-color: #0d5262;
+    background-color: #008d55;
     border-radius: 10px;
     z-index: 1;
     ${mq[1]} {
-      background-color: #1f4048;
+      background-color: #002d5d;
       left: 30px;
       width: calc(100% - 60px);
     }
   }
   .screenshotBlur {
     display: none;
-    background-color: #173036;
+    background-color: #002d5d;
     filter: blur(45px);
     position: absolute;
     bottom: 0;
@@ -287,7 +287,7 @@ const StyledSliderSection = styled('div')`
     }
     .toggle {
       font-size: 24px;
-      color: #b4c0c7;
+      color: #a5cfbe;
       position: relative;
       padding-left: 32px;
       cursor: pointer;
@@ -302,7 +302,7 @@ const StyledSliderSection = styled('div')`
         width: 12px;
         height: 12px;
         border-radius: 50%;
-        background-color: #457f8d;
+        background-color: #71bf95;
         position: absolute;
         top: 50%;
         left: 0;
@@ -701,7 +701,15 @@ export default function Home(): JSX.Element {
                 <img src="/img/check-icon.svg" alt="check-icon" />
                 <div>
                   <strong>Virtual datasets</strong> for ad-hoc data exploration
+            </div>
+            </div>
+            <Carousel ref={slider} effect="scrollx" afterChange={onChange}>
+              <div className="imageContainer">
+                <img src="img/explore.jpg" alt="Explore (chart buider) UI" />
                 </div>
+            <Carousel ref={slider} effect="scrollx" afterChange={onChange}>
+              <div className="imageContainer">
+                <img src="img/explore.jpg" alt="Explore (chart buider) UI" />
               </div>
               <div className="item">
                 <img src="/img/check-icon.svg" alt="check-icon" />
