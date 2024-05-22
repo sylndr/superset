@@ -207,7 +207,7 @@ class TeamsNotification(BaseNotification):  # pylint: disable=too-few-public-met
                     raise NotificationAuthorizationException(
                         "An authentication with MS Teams occured."
                     )
-                if response.status_code >= 500:
+                if response.status_code >= 400:
                     raise NotificationMalformedException(
                         "A malford request was made to teams"
                     )
