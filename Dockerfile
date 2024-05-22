@@ -80,7 +80,7 @@ RUN apt-get update && \
     apt-get install --no-install-recommends -y unzip wget
 
 RUN export CHROMEDRIVER_VERSION=$(curl --silent https://chromedriver.storage.googleapis.com/LATEST_RELEASE_114) && \
-    wget -qO google-chrome-stable_current_amd64.deb https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_${CHROMEDRIVER_VERSION}-1_amd64.deb && \
+    wget -qO google-chrome-stable_current_amd64.deb https://mirror.cs.uchicago.edu/google-chrome/pool/main/g/google-chrome-stable/google-chrome-stable_${CHROMEDRIVER_VERSION}-1_amd64.deb && \
     apt-get install -y --no-install-recommends ./google-chrome-stable_current_amd64.deb && \
     rm -f google-chrome-stable_current_amd64.deb && \
     wget -qO chromedriver_linux64.zip https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip && \

@@ -59,6 +59,7 @@ class ReportScheduleValidatorType(StrEnum):
 class ReportRecipientType(StrEnum):
     EMAIL = "Email"
     SLACK = "Slack"
+    TEAMS = "Teams"
 
 
 class ReportState(StrEnum):

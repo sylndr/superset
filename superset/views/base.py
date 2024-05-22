@@ -28,13 +28,13 @@ from typing import Any, Callable, cast
 import simplejson as json
 import yaml
 from flask import (
+    Response,
     abort,
     flash,
     g,
     get_flashed_messages,
     redirect,
     request,
-    Response,
     send_file,
     session,
 )
@@ -44,7 +44,9 @@ from flask_appbuilder.forms import DynamicForm
 from flask_appbuilder.models.sqla.filters import BaseFilter
 from flask_appbuilder.security.sqla.models import User
 from flask_appbuilder.widgets import ListWidget
-from flask_babel import get_locale, gettext as __, lazy_gettext as _
+from flask_babel import get_locale
+from flask_babel import gettext as __
+from flask_babel import lazy_gettext as _
 from flask_jwt_extended.exceptions import NoAuthorizationError
 from flask_wtf.csrf import CSRFError
 from flask_wtf.form import FlaskForm
@@ -56,6 +58,8 @@ from wtforms.fields.core import Field, UnboundField
 
 from superset import (
     app as superset_app,
+)
+from superset import (
     appbuilder,
     conf,
     get_feature_flags,
@@ -366,14 +370,18 @@ def menu_data(user: User) -> dict[str, Any]:
             "languages": languages,
             "show_language_picker": len(languages) > 1,
             "user_is_anonymous": user.is_anonymous,
-            "user_info_url": None
-            if is_feature_enabled("MENU_HIDE_USER_INFO")
-            else appbuilder.get_url_for_userinfo,
+            "user_info_url": (
+                None
+                if is_feature_enabled("MENU_HIDE_USER_INFO")
+                else appbuilder.get_url_for_userinfo
+            ),
             "user_logout_url": appbuilder.get_url_for_logout,
             "user_login_url": appbuilder.get_url_for_login,
-            "user_profile_url": None
-            if user.is_anonymous or is_feature_enabled("MENU_HIDE_USER_INFO")
-            else "/profile/",
+            "user_profile_url": (
+                None
+                if user.is_anonymous or is_feature_enabled("MENU_HIDE_USER_INFO")
+                else "/profile/"
+            ),
             "locale": session.get("locale", "en"),
         },
     }
@@ -394,17 +402,18 @@ def cached_common_bootstrap_data(  # pylint: disable=unused-argument
         k: (list(conf.get(k)) if isinstance(conf.get(k), set) else conf.get(k))
         for k in FRONTEND_CONF_KEYS
     }
+    frontend_config["ALERT_REPORTS_NOTIFICATION_METHODS"] = [
+        ReportRecipientType.EMAIL,
+    ]
 
     if conf.get("SLACK_API_TOKEN"):
-        frontend_config["ALERT_REPORTS_NOTIFICATION_METHODS"] = [
-            ReportRecipientType.EMAIL,
-            ReportRecipientType.SLACK,
+        frontend_config["ALERT_REPORTS_NOTIFICATION_METHODS"] += [
+            ReportRecipientType.SLACK
         ]
-    else:
-        frontend_config["ALERT_REPORTS_NOTIFICATION_METHODS"] = [
-            ReportRecipientType.EMAIL,
+    if conf.get("TEAMS_ENABLED") == "TRUE":
+        frontend_config["ALERT_REPORTS_NOTIFICATION_METHODS"] += [
+            ReportRecipientType.TEAMS
         ]
-
     # verify client has google sheets installed
     available_specs = get_available_engine_specs()
     frontend_config["HAS_GSHEETS_INSTALLED"] = bool(available_specs[GSheetsEngineSpec])

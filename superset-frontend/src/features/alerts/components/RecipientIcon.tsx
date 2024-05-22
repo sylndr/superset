@@ -41,6 +41,10 @@ export default function RecipientIcon({ type }: { type: string }) {
       recipientIconConfig.icon = <Icons.Slack css={StyledIcon} />;
       recipientIconConfig.label = RecipientIconName.Slack;
       break;
+    case RecipientIconName.Teams:
+      recipientIconConfig.icon = <Icons.Message css={StyledIcon} />;
+      recipientIconConfig.label = RecipientIconName.Teams;
+      break;
     default:
       recipientIconConfig.icon = null;
       recipientIconConfig.label = '';

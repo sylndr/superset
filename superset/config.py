@@ -34,7 +34,7 @@ from collections import OrderedDict
 from datetime import timedelta
 from email.mime.multipart import MIMEMultipart
 from importlib.resources import files
-from typing import Any, Callable, Literal, TYPE_CHECKING, TypedDict
+from typing import TYPE_CHECKING, Any, Callable, Literal, TypedDict
 
 import pkg_resources
 from celery.schedules import crontab
@@ -55,7 +55,7 @@ from superset.stats_logger import DummyStatsLogger
 from superset.superset_typing import CacheConfig
 from superset.tasks.types import ExecutorType
 from superset.utils import core as utils
-from superset.utils.core import is_test, NO_TIME_RANGE, parse_boolean_string
+from superset.utils.core import NO_TIME_RANGE, is_test, parse_boolean_string
 from superset.utils.encrypt import SQLAlchemyUtilsAdapter
 from superset.utils.log import DBEventLogger
 from superset.utils.logging_configurator import DefaultLoggingConfigurator
@@ -577,9 +577,9 @@ IS_FEATURE_ENABLED_FUNC: Callable[[str, bool | None], bool] | None = None
 #
 # Takes as a parameter the common bootstrap payload before transformations.
 # Returns a dict containing data that should be added or overridden to the payload.
-COMMON_BOOTSTRAP_OVERRIDES_FUNC: Callable[
-    [dict[str, Any]], dict[str, Any]
-] = lambda data: {}  # default: empty dict
+COMMON_BOOTSTRAP_OVERRIDES_FUNC: Callable[[dict[str, Any]], dict[str, Any]] = (
+    lambda data: {}
+)  # default: empty dict
 
 # EXTRA_CATEGORICAL_COLOR_SCHEMES is used for adding custom categorical color schemes
 # example code for "My custom warm to hot" color scheme
@@ -1095,9 +1095,9 @@ UPLOADED_CSV_HIVE_NAMESPACE: str | None = None
 
 # mypy doesn't catch that if case ensures list content being always str
 ALLOWED_USER_CSV_SCHEMA_FUNC: Callable[[Database, models.User], list[str]] = (
-    lambda database, user: [UPLOADED_CSV_HIVE_NAMESPACE]
-    if UPLOADED_CSV_HIVE_NAMESPACE
-    else []
+    lambda database, user: (
+        [UPLOADED_CSV_HIVE_NAMESPACE] if UPLOADED_CSV_HIVE_NAMESPACE else []
+    )
 )
 
 # Values that should be treated as nulls for the csv uploads.
@@ -1336,6 +1336,7 @@ EMAIL_REPORTS_CTA = "Explore in Superset"
 
 # Slack API token for the superset reports, either string or callable
 SLACK_API_TOKEN: Callable[[], str] | str | None = None
+TEAMS_ENABLED: Callable[[], str] | str | None = None
 SLACK_PROXY = None
 
 # The webdriver to use for generating reports. Use one of the following
@@ -1549,9 +1550,9 @@ GLOBAL_ASYNC_QUERIES_REDIS_STREAM_LIMIT_FIREHOSE = 1000000
 GLOBAL_ASYNC_QUERIES_REGISTER_REQUEST_HANDLERS = True
 GLOBAL_ASYNC_QUERIES_JWT_COOKIE_NAME = "async-token"
 GLOBAL_ASYNC_QUERIES_JWT_COOKIE_SECURE = False
-GLOBAL_ASYNC_QUERIES_JWT_COOKIE_SAMESITE: None | (
-    Literal["None", "Lax", "Strict"]
-) = None
+GLOBAL_ASYNC_QUERIES_JWT_COOKIE_SAMESITE: None | (Literal["None", "Lax", "Strict"]) = (
+    None
+)
 GLOBAL_ASYNC_QUERIES_JWT_COOKIE_DOMAIN = None
 GLOBAL_ASYNC_QUERIES_JWT_SECRET = "test-secret-change-me"
 GLOBAL_ASYNC_QUERIES_TRANSPORT: Literal["polling", "ws"] = "polling"
@@ -1613,9 +1614,9 @@ ADVANCED_DATA_TYPES: dict[str, AdvancedDataType] = {
 #     "Xyz",
 #     [{"col": 'created_by', "opr": 'rel_o_m', "value": 10}],
 # )
-WELCOME_PAGE_LAST_TAB: (
-    Literal["examples", "all"] | tuple[str, list[dict[str, Any]]]
-) = "all"
+WELCOME_PAGE_LAST_TAB: Literal["examples", "all"] | tuple[str, list[dict[str, Any]]] = (
+    "all"
+)
 
 # Max allowed size for a zipped file
 ZIPPED_FILE_MAX_SIZE = 100 * 1024 * 1024  # 100MB
